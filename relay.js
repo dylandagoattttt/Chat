@@ -1,7 +1,7 @@
 // npm i ws
 const { WebSocketServer } = require("ws");
 const PORT = process.env.PORT || 8080;
-const TOKEN = process.env.TOKEN || "change-me"; // shared secret
+const TOKEN = process.env.TOKEN || "change-me";
 
 const wss = new WebSocketServer({ port: PORT });
 const clients = new Set();
@@ -23,6 +23,7 @@ wss.on("connection", (ws, req) => {
       name: String(data.name || "?").slice(0, 32),
       text: data.text,
       t: Date.now(),
+      uid: Number(data.uid) || 0,
     });
     for (const c of clients) {
       if (c.readyState === 1) c.send(out);
